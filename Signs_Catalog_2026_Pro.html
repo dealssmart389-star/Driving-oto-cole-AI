@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving-AI 2026 | النسخة الاحترافية العالمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --bg-color: #f8f9fa;
+        }
+
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--bg-color); 
+            margin: 0; padding: 0; 
+            overflow-x: hidden;
+        }
+
+        /* رأس الصفحة - Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), #16213e);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* وحدة مراقبة الأخطاء الذكية */
+        #debug-log {
+            display: none;
+            background: #fff3f3;
+            color: #d32f2f;
+            padding: 10px;
+            margin: 15px;
+            border-radius: 12px;
+            border: 1px solid #ffcdd2;
+            font-size: 13px;
+        }
+
+        /* شبكة عرض العلامات */
+        .signs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            padding: 25px;
+            perspective: 1000px;
+        }
+
+        .sign-card {
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            border-bottom: 4px solid #ddd;
+            cursor: pointer;
+        }
+
+        .sign-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .sign-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #f1f1f1;
+            color: #555;
+            font-weight: bold;
+        }
+
+        /* النافذة المنبثقة (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            width: 85%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 35px;
+            text-align: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-close {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Driving-AI 2026 🚗</h1>
+        <p>موسوعة العلامات العالمية والمدونة المغربية</p>
+    </header>
+
+    <div id="debug-log"></div>
+
+    <div class="signs-container" id="mainContainer">
+        </div>
+
+    <div id="infoModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="m-icon" style="font-size: 100px;"></div>
+            <h2 id="m-title"></h2>
+            <p id="m-desc" style="color: #444; line-height: 1.8;"></p>
+            <div id="m-law" style="color: var(--info); font-weight: bold; margin: 15px 0;"></div>
+            <button class="btn-close" onclick="closeModal()">فهمت، استمرار</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. قاعدة بيانات البانوات (Data)
+        const signsDatabase = [
+            { id: 1, type: 'danger', icon: '⚠️', title: 'خطر متنوع', desc: 'انتباه وجود خطر غير محدد على الطريق، يجب تخفيف السرعة فوراً.', law: 'المادة 48' },
+            { id: 2, type: 'prohibition', icon: '⛔', title: 'ممنوع المرور', desc: 'يمنع السير نهائياً لجميع المركبات في هذا الاتجاه.', law: 'المادة 51' },
+            { id: 3, type: 'mandatory', icon: '🔵➡️', title: 'إجباري لليمين', desc: 'يجب على السائق تغيير الاتجاه نحو اليمين في هذا الملتقى.', law: 'المادة 54' },
+            { id: 4, type: 'danger', icon: '🧒', title: 'مرور الأطفال', desc: 'انتباه منطقة مدارس أو ملاعب، السرعة محددة في 30 كم/س.', law: 'المادة 49' },
+            { id: 5, type: 'info', icon: '🅿️', title: 'موقف سيارات', desc: 'منطقة مخصصة مسموح فيها بركن المركبات.', law: 'المادة 56' },
+            { id: 6, type: 'prohibition', icon: '🔞', title: 'تحديد 60', desc: 'يمنع تجاوز سرعة 60 كم/س في هذا المقطع الطرقي.', law: 'المادة 53' }
+        ];
+
+        // 2. المحرك الذكي (The AI Engine) لتنظيم البيانات وتصحيحها
+        const Engine = {
+            // تصحيح الأخطاء البرمجية في البيانات
+            sanitizeData(data) {
+                try {
+                    return data.map(item => ({
+                        ...item,
+                        title: item.title.trim(),
+                        desc: item.desc.trim()
+                    }));
+                } catch (error) {
+                    this.logError("خلل في هيكلة البيانات: " + error.message);
+                    return data;
+                }
+            },
+
+            // ترتيب العلامات حسب الأهمية (خطر -> منع -> إجبار)
+            organizeByPriority(data) {
+                const priority = { 'danger': 1, 'prohibition': 2, 'mandatory': 3, 'info': 4 };
+                return data.sort((a, b) => priority[a.type] - priority[b.type]);
+            },
+
+            logError(message) {
+                const log = document.getElementById('debug-log');
+                log.style.display = 'block';
+                log.innerText = "🔧 محرك التصحيح: " + message;
+            }
+        };
+
+        // 3. وظائف التحكم بالواجهة (UI Functions)
+        function initializeApp() {
+            const cleanData = Engine.sanitizeData(signsDatabase);
+            const sortedData = Engine.organizeByPriority(cleanData);
+            const container = document.getElementById('mainContainer');
+
+            container.innerHTML = sortedData.map(sign => `
+                <div class="sign-card" onclick="openModal(${sign.id})">
+                    <span class="sign-icon">${sign.icon}</span>
+                    <strong style="display:block; margin-bottom:10px;">${sign.title}</strong>
+                    <span class="tag">${sign.law}</span>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const sign = signsDatabase.find(s => s.id === id);
+            if (!sign) {
+                Engine.logError("العلامة المطلوبة غير موجودة في الذاكرة.");
+                return;
+            }
+
+            document.getElementById('m-icon').innerText = sign.icon;
+            document.getElementById('m-title').innerText = sign.title;
+            document.getElementById('m-desc').innerText = sign.desc;
+            document.getElementById('m-law').innerText = "المرجع القانوني: " + sign.law;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        // مراقبة أخطاء المتصفح بشكل عام وتصحيحها
+        window.onerror = (msg, url, line) => {
+            Engine.logError(`خطأ تقني في السطر ${line}: ${msg}`);
+            return true;
+        };
+
+        // تشغيل التطبيق عند تحميل الصفحة
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
