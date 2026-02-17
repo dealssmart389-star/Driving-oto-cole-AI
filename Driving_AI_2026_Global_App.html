@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving-AI 2026 | النسخة العالمية الخارقة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* نظام الألوان الديناميكي */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #1a1a2e;
+            --accent: #3498db;
+            --danger: #e74c3c;
+        }
+
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color);
+            transition: 0.5s; margin: 0; padding: 0;
+        }
+
+        /* الهيدر المتطور */
+        header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white; padding: 30px; text-align: center;
+            border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+        }
+
+        /* شبكة البانوات العالمية */
+        .signs-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; padding: 20px;
+        }
+
+        .ultra-card {
+            background: var(--card-bg); border-radius: 20px; padding: 15px;
+            text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: 0.3s; cursor: pointer; border: 1px solid #eee;
+        }
+
+        .ultra-card:hover { transform: scale(1.05); border-color: var(--accent); }
+
+        /* التحكم في الوضع الليلي */
+        .controls {
+            position: fixed; bottom: 20px; left: 20px; z-index: 1000;
+        }
+
+        .theme-btn {
+            background: var(--accent); color: white; border: none;
+            padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: bold;
+        }
+
+        /* نافذة المعلومات */
+        #info-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center; z-index: 2000;
+        }
+
+        .modal-content {
+            background: white; padding: 30px; border-radius: 30px; width: 80%;
+            max-width: 400px; text-align: center; color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Driving-AI 2026</h1>
+    <p>الموسوعة الدولية والمحاكي الذكي</p>
+</header>
+
+<div class="signs-grid" id="mainDisplay">
+    </div>
+
+<div class="controls">
+    <button class="theme-btn" onclick="toggleTheme()">🌗 تبديل الإضاءة</button>
+</div>
+
+<div id="info-modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 id="m-title"></h2>
+        <p id="m-desc"></p>
+        <button onclick="closeModal()" style="background:#1a1a2e; color:white; border:none; padding:10px 30px; border-radius:15px;">إغلاق</button>
+    </div>
+</div>
+
+<script>
+    // 1. قاعدة البيانات المستخلصة من "أبو حمزة" والمعايير الدولية
+    const globalData = [
+        { title: "منعرج خطير", desc: "انتباه منعرج حاد لليمين.", icon: "⚠️", cat: "تحذير" },
+        { title: "ممنوع الوقوف", desc: "يمنع ركن السيارة في هذا المقطع.", icon: "🚫", cat: "منع" },
+        { title: "قف - STOP", desc: "وجوب التوقف التام عند الخط.", icon: "🛑", cat: "آمرة" },
+        { title: "دوار إجباري", desc: "يجب اتباع مسار المدار.", icon: "🔵", cat: "إجبار" }
+    ];
+
+    // 2. محرك العرض والذكاء
+    function initApp() {
+        const grid = document.getElementById('mainDisplay');
+        grid.innerHTML = globalData.map(item => `
+            <div class="ultra-card" onclick="showDetails('${item.title}', '${item.desc}')">
+                <div style="font-size: 50px;">${item.icon}</div>
+                <h3>${item.title}</h3>
+                <small>${item.cat}</small>
+            </div>
+        `).join('');
+    }
+
+    function showDetails(title, desc) {
+        document.getElementById('m-title').innerText = title;
+        document.getElementById('m-desc').innerText = desc;
+        document.getElementById('info-modal').style.display = 'flex';
+        speak(title); // ميزة النطق الصوتي
+    }
+
+    function closeModal() {
+        document.getElementById('info-modal').style.display = 'none';
+    }
+
+    // 3. نظام الإضاءة المتطور
+    let isDark = false;
+    function toggleTheme() {
+        isDark = !isDark;
+        const root = document.documentElement;
+        if(isDark) {
+            root.style.setProperty('--bg-color', '#121212');
+            root.style.setProperty('--card-bg', '#1e1e1e');
+            root.style.setProperty('--text-color', '#ffffff');
+        } else {
+            root.style.setProperty('--bg-color', '#f8f9fa');
+            root.style.setProperty('--card-bg', '#ffffff');
+            root.style.setProperty('--text-color', '#1a1a2e');
+        }
+    }
+
+    // 4. محرك النطق العالمي
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance();
+        msg.text = text;
+        msg.lang = 'ar-SA';
+        window.speechSynthesis.speak(msg);
+    }
+
+    window.onload = initApp;
+</script>
+
+</body>
+</html>
