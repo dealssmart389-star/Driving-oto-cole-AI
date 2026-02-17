@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving-AI 2026 | الموسوعة والامتحان</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #27ae60;
+            --accent: #e67e22;
+            --danger: #c0392b;
+            --light: #f4f7f6;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--light); margin: 0; padding: 10px; }
+        .master-container { max-width: 800px; margin: auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        /* الهيدر */
+        header { background: var(--primary); color: white; padding: 20px; text-align: center; }
+        .tabs { display: flex; background: #ecf0f1; }
+        .tab-btn { flex: 1; padding: 15px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 16px; }
+        .tab-btn.active { background: var(--secondary); color: white; }
+
+        /* الأقسام */
+        .content-section { display: none; padding: 20px; animation: fadeIn 0.5s; }
+        .content-section.active { display: block; }
+
+        /* البحث والمخالفات */
+        .search-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; }
+        .btn-search { background: var(--secondary); color: white; border: none; border-radius: 10px; padding: 0 20px; cursor: pointer; }
+        .res-card { background: #fff; border-right: 5px solid var(--accent); padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+        /* نظام الامتحان */
+        .quiz-card { background: #fff; border: 2px solid #eee; padding: 20px; border-radius: 15px; text-align: center; }
+        .opt-btn { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; background: white; cursor: pointer; transition: 0.2s; font-size: 16px; }
+        .opt-btn:hover { background: #f0f0f0; border-color: var(--secondary); }
+        .progress-bar { height: 10px; background: #eee; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--secondary); width: 0%; transition: 0.4s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="master-container">
+    <header>
+        <h1>Driving-AI 2026</h1>
+        <p>نظام مدونة السير المغربية المتكامل</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('search-tab')">🔍 بحث القانون</button>
+        <button class="tab-btn" onclick="openTab('exam-tab')">📝 إختبار الذكاء</button>
+    </div>
+
+    <section id="search-tab" class="content-section active">
+        <div class="search-group">
+            <input type="text" id="queryInput" placeholder="ابحث عن مخالفة أو مادة قانونية...">
+            <button class="btn-search" onclick="executeSearch()">بحث</button>
+        </div>
+        <div id="searchResults"></div>
+    </section>
+
+    <section id="exam-tab" class="content-section">
+        <div id="quiz-container" class="quiz-card">
+            <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+            <div id="question-box">
+                <h3>هل أنت مستعد لبدء الاختبار؟</h3>
+                <button class="btn-search" style="padding: 15px 40px;" onclick="startQuiz()">ابدأ الآن</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // --- 1. قاعدة البيانات (Data) ---
+    const lawData = {
+        violations: [
+            { title: "عدم احترام الضوء الأحمر", level: "درجة 1", fine: 700, fast: 400, points: 4 },
+            { title: "عدم احترام علامة قف", level: "درجة 1", fine: 700, fast: 400, points: 4 },
+            { title: "استعمال الهاتف أثناء السياقة", level: "درجة 2", fine: 500, fast: 300, points: 2 },
+            { title: "عدم وضع حزام الأمان", level: "درجة 2", fine: 500, fast: 300, points: 0 },
+            { title: "تجاوز السرعة (20-30 كم/س)", level: "درجة 2", fine: 500, fast: 300, points: 2 },
+            { title: "وقوف خاطئ أو غير قانوني", level: "درجة 3", fine: 300, fast: 150, points: 0 }
+        ],
+        quiz: [
+            { q: "كم هي مدة صلاحية رخصة السياقة المؤقتة؟", options: ["سنة واحدة", "سنتان", "ثلاث سنوات"], correct: 1 },
+            { q: "ما هي غرامة عدم احترام الضوء الأحمر في حالة الأداء خلال 24 ساعة؟", options: ["700 درهم", "500 درهم", "400 درهم"], correct: 2 },
+            { q: "كم عدد النقاط التي يتم سحبها عند استخدام الهاتف أثناء السياقة؟", options: ["نقطتان", "4 نقاط", "لا شيء"], correct: 0 }
+        ]
+    };
+
+    // --- 2. محرك التبديل بين الأقسام ---
+    function openTab(tabId) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // --- 3. محرك البحث الذكي ---
+    function executeSearch() {
+        const query = document.getElementById('queryInput').value;
+        const resultsArea = document.getElementById('searchResults');
+        resultsArea.innerHTML = "";
+        
+        const filtered = lawData.violations.filter(v => v.title.includes(query));
+        
+        if(filtered.length > 0) {
+            filtered.forEach(v => {
+                resultsArea.innerHTML += `
+                    <div class="res-card">
+                        <strong>${v.title}</strong> <small>(${v.level})</small>
+                        <span style="display:block; color:var(--danger)">غرامة: ${v.fine} درهم | نقاط: -${v.points}</span>
+                        <span style="color:var(--secondary)">💰 الدفع السريع: ${v.fast} درهم</span>
+                    </div>`;
+            });
+        } else {
+            resultsArea.innerHTML = "<p>لا توجد نتائج مطابقة..</p>";
+        }
+    }
+
+    // --- 4. محرك الامتحان التفاعلي ---
+    let currentQ = 0;
+    let score = 0;
+
+    function startQuiz() {
+        currentQ = 0; score = 0;
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const qData = lawData.quiz[currentQ];
+        const progress = (currentQ / lawData.quiz.length) * 100;
+        document.getElementById('progress').style.width = progress + "%";
+
+        document.getElementById('question-box').innerHTML = `
+            <h3>${qData.q}</h3>
+            ${qData.options.map((opt, i) => `<button class="opt-btn" onclick="checkQuiz(${i})">${opt}</button>`).join('')}
+        `;
+    }
+
+    function checkQuiz(choice) {
+        if(choice === lawData.quiz[currentQ].correct) score++;
+        currentQ++;
+        if(currentQ < lawData.quiz.length) showQuestion();
+        else showResult();
+    }
+
+    function showResult() {
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('question-box').innerHTML = `
+            <h2>انتهى الاختبار!</h2>
+            <p style="font-size:24px">نتيجتك: ${score} من ${lawData.quiz.length}</p>
+            <button class="btn-search" onclick="startQuiz()">إعادة المحاولة</button>
+        `;
+    }
+</script>
+
+</body>
+</html>
