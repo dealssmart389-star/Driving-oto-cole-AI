@@ -1,0 +1,35 @@
+{
+  "driving_pro_2026": {
+    "license_engine": {
+      "categories": ["AM", "A1", "A", "B", "C", "D", "EB", "EC", "ED"],
+      "points_system": {
+        "initial": 20,
+        "final": 30,
+        "recovery_rate": "4 points/year without violations"
+      }
+    },
+    "violations_engine": {
+      "degree_1": {
+        "price": "700 DH",
+        "reduction": "400 DH (24h) / 500 DH (15 days)",
+        "examples": ["Red Light", "Stop Sign", "Speed > 30km/h", "Opposite Way"]
+      },
+      "degree_2": {
+        "price": "500 DH",
+        "reduction": "300 DH (24h) / 350 DH (15 days)",
+        "examples": ["Seatbelt", "Phone Use", "Speed 20-30km/h"]
+      },
+      "degree_3": {
+        "price": "300 DH",
+        "reduction": "150 DH (24h) / 200 DH (15 days)",
+        "examples": ["No Lights", "Defective Horn", "Wrong Parking"]
+      }
+    },
+    "legal_articles": [
+      {"id": 1, "text": "إلزامية الرخصة لكل مركبة بمحرك"},
+      {"id": 9, "text": "تبديل الرخصة الأجنبية بعد سنة من الإقامة"},
+      {"id": 14, "text": "الفحص الطبي الإلزامي كل 10 سنوات (أو سنتين للكبار)"},
+      {"id": 161, "text": "عقوبات السياقة تحت تأثير الكحول أو المواد المخدرة"}
+    ]
+  }
+}
