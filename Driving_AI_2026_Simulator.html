@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving-AI 2026 | المحاكي الرسمي</title>
+    <style>
+        :root {
+            --main-bg: #1a1a2e;
+            --card-bg: #ffffff;
+            --accent-color: #3498db;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+        }
+
+        body { font-family: 'Cairo', sans-serif; background: var(--main-bg); color: #333; margin: 0; padding: 0; }
+        .app-container { max-width: 900px; margin: 20px auto; background: var(--light); border-radius: 25px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        
+        /* شريط المعلومات */
+        .status-bar { background: #16213e; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .progress-container { flex: 1; height: 12px; background: #0f3460; border-radius: 10px; margin: 0 20px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--success); width: 0%; transition: 0.5s; }
+
+        /* منطقة السؤال */
+        .question-area { padding: 40px; background: white; min-height: 400px; }
+        .category-tag { background: var(--accent-color); color: white; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
+        .question-text { font-size: 22px; font-weight: bold; color: var(--main-bg); margin: 20px 0; line-height: 1.6; }
+        
+        /* الأزرار */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .option-btn { padding: 20px; border: 2px solid #eee; border-radius: 15px; background: #f9f9f9; cursor: pointer; font-size: 18px; transition: 0.3s; position: relative; overflow: hidden; }
+        .option-btn:hover { border-color: var(--accent-color); background: #ebf5fb; }
+        .option-btn.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
+
+        /* حاسبة السرعة */
+        .speed-calc { background: #fdf2e9; border: 1px dashed var(--accent-color); padding: 15px; border-radius: 10px; margin-top: 20px; display: none; }
+        
+        .footer-nav { padding: 20px; background: #f4f7f6; text-align: center; }
+        .btn-main { background: var(--main-bg); color: white; padding: 12px 40px; border: none; border-radius: 30px; cursor: pointer; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="status-bar">
+        <span>السؤال: <span id="q-num">1</span>/40</span>
+        <div class="progress-container"><div id="p-bar" class="progress-bar"></div></div>
+        <span>النتيجة: <span id="score">0</span></span>
+    </div>
+
+    <div class="question-area" id="main-content">
+        </div>
+
+    <div class="footer-nav">
+        <button class="btn-main" onclick="nextQuestion()">التالي ➜</button>
+    </div>
+</div>
+
+<script>
+    // قاعدة بيانات الامتحان المتطورة 2026
+    const quizDB = [
+        {
+            category: "قواعد السرعة",
+            q: "أنت تقود في طريق سيار. ما هي السرعة القصوى المسموح بها؟",
+            options: ["100 كم/س", "120 كم/س", "80 كم/س", "60 كم/س"],
+            correct: 1,
+            hint: "تذكر: الطريق السيار بالمغرب محدد في 120 كم/س إلا في حالات استثنائية."
+        },
+        {
+            category: "سياقة وقائية",
+            q: "على طريق مبلل (مطر)، مسافة التوقف تصبح:",
+            options: ["نفسها", "أقل بمرتين", "أطول بمرتين", "لا تتغير"],
+            correct: 2,
+            hint: "الالتحام يقل في الطريق المبلل، مما يضاعف مسافة التوقف."
+        },
+        {
+            category: "ميكانيكا/فحص",
+            q: "يجب مراقبة ضغط الإطارات:",
+            options: ["مرة كل سنة", "والإطارات ساخنة", "والإطارات باردة", "عند ميكانيكي فقط"],
+            correct: 2,
+            hint: "الفحص والاطارات باردة يعطي القياس الأدق."
+        },
+        {
+            category: "قواعد الأسبقية",
+            q: "في مدار (Rond-point) توجد به علامة 'ليس لكم حق الأسبقية'، الأولوية لـ:",
+            options: ["اليمين", "اليسار (داخل المدار)", "السيارة الأسرع", "أسبقية مطلقة لي"],
+            correct: 1,
+            hint: "في المغرب، أغلب المدارات تعطي الأولوية لليسار (القادمين من داخل المدار)."
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function renderQuestion() {
+        const q = quizDB[currentIdx];
+        const content = document.getElementById('main-content');
+        
+        // تحديث شريط التقدم
+        document.getElementById('q-num').innerText = currentIdx + 1;
+        document.getElementById('p-bar').style.width = ((currentIdx + 1) / quizDB.length) * 100 + "%";
+
+        content.innerHTML = `
+            <span class="category-tag">${q.category}</span>
+            <div class="question-text">${q.q}</div>
+            <div class="options-grid">
+                ${q.options.map((opt, i) => `
+                    <button class="option-btn" onclick="checkAnswer(this, ${i})">${opt}</button>
+                `).join('')}
+            </div>
+            <div id="hint-box" class="speed-calc">💡 معلومة: ${q.hint}</div>
+        `;
+    }
+
+    function checkAnswer(btn, idx) {
+        const q = quizDB[currentIdx];
+        const allBtns = document.querySelectorAll('.option-btn');
+        
+        // منع الضغط المتكرر
+        allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+        if(idx === q.correct) {
+            btn.classList.add('correct');
+            score += 1;
+            document.getElementById('score').innerText = score;
+        } else {
+            btn.classList.add('wrong');
+            allBtns[q.correct].classList.add('correct');
+        }
+        
+        document.getElementById('hint-box').style.display = 'block';
+    }
+
+    function nextQuestion() {
+        if(currentIdx < quizDB.length - 1) {
+            currentIdx++;
+            renderQuestion();
+        } else {
+            showFinalResult();
+        }
+    }
+
+    function showFinalResult() {
+        const content = document.getElementById('main-content');
+        const percentage = (score / quizDB.length) * 100;
+        let msg = percentage >= 80 ? "ناجح بامتياز! 🎉" : "تحتاج لمراجعة أكثر 📚";
+        
+        content.innerHTML = `
+            <div style="text-align:center">
+                <h2>انتهى الامتحان</h2>
+                <div style="font-size:60px; margin:20px 0">${score}/${quizDB.length}</div>
+                <h3>${msg}</h3>
+                <button class="btn-main" onclick="location.reload()">إعادة الاختبار</button>
+            </div>
+        `;
+    }
+
+    // تشغيل السؤال الأول عند التحميل
+    window.onload = renderQuestion;
+</script>
+
+</body>
+</html>
