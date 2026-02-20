@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Driving AI 2026 | Neural Core</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com;">
+
+    <style>
+        :root {
+            --primary-emerald: #1e4d3e; /* اللون السيادي المعتمد في النواة */
+            --ai-glow: #7ebfae;
+            --glass-bg: rgba(15, 32, 39, 0.92);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #2c5364, #203a43, #0f2027);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* حاوية التطبيق الزجاجية (Glassmorphism) */
+        #main-shell {
+            width: 92%;
+            max-width: 460px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 35px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.7);
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--ai-glow);
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to bottom, #ffffff, var(--ai-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 22px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-emerald);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            border-color: var(--ai-glow);
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* نظام الحماية ضد النسخ والتلاعب */
+        * { 
+            user-select: none; 
+            -webkit-user-drag: none;
+            outline: none;
+        }
+
+        #notification-indicator {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-shell">
+        <div id="notification-indicator"></div>
+        
+        <div class="status-bar">
+            <span>🛰️ AI NEURAL CORE</span>
+            <span id="score-val">النقاط: 30</span>
+        </div>
+
+        <div id="app-viewport">
+            <h1>Driving AI 2026</h1>
+            <p style="opacity: 0.5; margin-bottom: 45px; font-size: 0.9rem;">النظام القانوني الذكي للقيادة بالمغرب</p>
+            
+            <button class="action-btn" onclick="SystemBoot.launchExam()">
+                🚀 دخول نظام الاختبار
+            </button>
+            <button class="action-btn" onclick="SystemBoot.openLibrary()">
+                📚 موسوعة القوانين الذكية
+            </button>
+        </div>
+    </div>
+
+    <script src="Driving_project.js"></script> 
+    <script src="Driving_Exam_System.js"></script> 
+    
+    <script>
+        /* --- نظام الحماية السيادية (Anti-Hack Layer) --- */
+        document.addEventListener('contextmenu', e => e.preventDefault()); // منع القائمة اليمنى
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; // منع F12
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) return false;
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        };
+
+        const SystemBoot = {
+            launchExam() {
+                console.log("إطلاق محرك الاختبار العصبي...");
+                if(typeof ExamSystem !== 'undefined') {
+                    ExamSystem.start();
+                } else {
+                    alert("⚠️ خطأ تقني: محرك النواة غير متصل. تأكد من وجود ملف Driving_Exam_System.js");
+                }
+            },
+            openLibrary() {
+                alert("🔍 جاري فحص قاعدة بيانات مدونة السير 2026 والتعرف على القوانين...");
+            }
+        };
+    </script>
+</body>
+</html>
