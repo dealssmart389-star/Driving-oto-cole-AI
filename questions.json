@@ -1,37 +1,45 @@
+
 [
   {
-    "q": "هذه العلامة كتعلم على خطر تساقط الأحجار؟",
+    "q": "هذه العلامة تعلم عن خطر وجود أشغال على الطريق؟",
     "options": ["نعم", "لا"],
     "answer": 0,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Morocco_road_sign_A13.svg/400px-Morocco_road_sign_A13.svg.png",
-    "law_ref": "المادة 45: علامات الخطر"
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Morocco_road_sign_A13.svg/512px-Morocco_road_sign_A13.svg.png",
+    "law_ref": "المادة 45: علامات الخطر المؤقتة"
   },
   {
-    "q": "واجب عليا نوقف عند هاد العلامة؟",
+    "q": "عند هذه العلامة، الواجب عليا نوقف ونعطي حق الأسبقية؟",
     "options": ["نعم", "لا"],
     "answer": 0,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Morocco_road_sign_B2a.svg/400px-Morocco_road_sign_B2a.svg.png",
-    "law_ref": "المادة 51: علامة قف"
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Morocco_road_sign_B2a.svg/512px-Morocco_road_sign_B2a.svg.png",
+    "law_ref": "المادة 50: علامة قف القانونية"
   },
   {
-    "q": "هاد العلامة كتمنع مرور الدراجات؟",
+    "q": "هذه العلامة تمنع مرور جميع أنواع الدراجات؟",
     "options": ["نعم", "لا"],
     "answer": 0,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Morocco_road_sign_B11.svg/400px-Morocco_road_sign_B11.svg.png",
-    "law_ref": "المادة 48: علامات المنع"
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Morocco_road_sign_B11.svg/512px-Morocco_road_sign_B11.svg.png",
+    "law_ref": "المادة 48: منع مرور المركبات ذات عجلتين"
   },
   {
-    "q": "مسموح ليا نتابع السير للقدام فهاد الطريق؟",
-    "options": ["نعم", "لا"],
-    "answer": 1,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Morocco_road_sign_B1.svg/400px-Morocco_road_sign_B1.svg.png",
-    "law_ref": "المادة 48: ممنوع المرور"
-  },
-  {
-    "q": "هاد العلامة كتعلم على وجود مستشفى؟",
+    "q": "هذه العلامة تجبرني على تغيير الاتجاه نحو اليمين؟",
     "options": ["نعم", "لا"],
     "answer": 0,
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Morocco_road_sign_E14.svg/400px-Morocco_road_sign_E14.svg.png",
-    "law_ref": "إرشادات طبية"
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Morocco_road_sign_C1.svg/512px-Morocco_road_sign_C1.svg.png",
+    "law_ref": "المادة 52: علامات الإجبار والالتزام"
+  },
+  {
+    "q": "هذه العلامة تعلم عن وجود مركز للإغاثة أو مستشفى؟",
+    "options": ["نعم", "لا"],
+    "answer": 0,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Morocco_road_sign_E14.svg/512px-Morocco_road_sign_E14.svg.png",
+    "law_ref": "المادة 45: علامات الإرشاد والخدمات"
+  },
+  {
+    "q": "هل يمنع المرور في هذا الاتجاه (Interdit)؟",
+    "options": ["نعم", "لا"],
+    "answer": 0,
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Morocco_road_sign_B1.svg/512px-Morocco_road_sign_B1.svg.png",
+    "law_ref": "المادة 48: علامة منع المرور الكلي"
   }
 ]
